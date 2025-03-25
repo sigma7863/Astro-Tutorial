@@ -1,9 +1,28 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { transformer } from 'astro:schema';
+import Navigation from '../components/Navigation.astro';
 import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const pageTitle = "私について";
+
+const identity = {
+	firstName: "サラ",
+	country: "カナダ",
+	occupation: "技術ライター",
+	hobbies: ["写真", "バードウォッチング", "野球"],
+};
+
+const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "ドキュメントの執筆"];
+
+const happy = true;
+const finished = false;
+const goal = 3;
+
+const skillColor = "navy";
+const fontWeight = "bold";
+const textCase = "uppercase";
 ---
 
 <html lang="ja">
@@ -12,17 +31,50 @@ import Layout from '../layouts/Layout.astro';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{pageTitle}</title>
+		<style define:vars={{skillColor, fontWeight, textCase}}>
+			h1 {
+				color: purple;
+				font-size: 4rem;
+			}
+			.skill {
+				color: var(--skillColor);
+				fonst-weight: var(--fontWeight);
+				font-transform: var(--textCase);
+			}
+		</style>
 	</head>
+
 	<body>
-        <a href="/">ホーム</a>
-        <a href="/about/">概要</a>
+        <Navigation />
         <h1>私のAstroサイト</h1>
-        <h1>私について</h1>
+        <h1>{pageTitle}</h1>
         <h2>... そして私の新しいAstroサイトについて！</h2>
           
         <p>私はAstroの入門チュートリアルを進めています。これは私のウェブサイトの2番目のページで、自分で作った初めてのページです！</p>
           
         <p>このサイトはチュートリアルを進めるにつれて更新されていきます。定期的にチェックして、私の旅の様子を見に来てください！</p>
+
+		<p>以下は私に関するいくつかの事実です。</p>
+		
+		<ul>
+  		<li>私の名前は{identity.firstName}です。</li>
+  		<li>{identity.country}に住んでおり、{identity.occupation}として働いています。</li>
+  		{identity.hobbies.length >= 2 &&
+    	<li>私の2つの趣味は{identity.hobbies[0]}と{identity.hobbies[1]}です。</li>
+  		}
+		</ul>
+
+		<p>私のスキルは以下の通りです。</p>
+		<ul>
+  			{skills.map((skill) => <li class="skill">{skill}</li>)}
+		</ul>
+
+		{happy && <p>I am happy to be learning Astro! Astroを学べて幸せです！</p>}
+
+		{finished && <p>I finished this tutorial! このチュートリアルを終えました！</p>}
+
+		{goal === 3 ? <p>My goal is to finish in 3 days. 3日で終えるのが目標です。</p> : <p>My goal is not 3 days. 3日が目標ではありません。</p>}
+		<Footer />
 	</body>
 </html>
